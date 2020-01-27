@@ -11,17 +11,9 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-//
-// Route::get('/falan' , function () {
-// 	return App\TodoItem::all();
-// });
 
 Route::get('/', 'TodoItemController@index')->name("lolo")->middleware(['auth']);
 Route::post('/store', 'TodoItemController@store')->name("storeTodo")->middleware(['auth']);
-// Route::get('/random', 'TodoItemController@randomAddTodo');
 Route::get('/complaint/{todoitem}', 'TodoItemController@complaitedTodoList')->name('setComplaite')->middleware(['auth']);
 Route::get('/delete/{todoitem}', 'TodoItemController@deleteTodoList')->name('deleteItem')->middleware(['auth']);
 
