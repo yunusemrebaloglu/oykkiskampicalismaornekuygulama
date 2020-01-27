@@ -13,16 +13,15 @@ class TodoItemController extends Controller
 
 		$sortby = "id";
 		$sorttype = "DESC";
-		if ($request->sortName) $sortname = $request->sortName  & $sorttype = $request->sortType;
+		if ($request->$sortby) $sortby = $request->$sortby  & $sorttype = $request->sortType;
 
-		$todoitem = TodoItem::orderBy($sortname, $sorttype);
+		$todoitem = TodoItem::orderBy($sortby, $sorttype);
 
 		if($request->searchColumnName) $todoitem->where($request->searchColumnName,'like', "%".$request->searchName."%");
 
 		if ($request->isComplaint == "true" ) $todoitem->whereNotNull("complated_at");
 		elseif($request->isComplaint == "false") $todoitem->whereNull("complated_at");
 
-		if($request->sortName) $todoitem->orderBy($request->sortName, $request->sortType);
 
 		return view("todos", ["todos" => $todoitem->paginate($request->paginateCount) ]);
 
