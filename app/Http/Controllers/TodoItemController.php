@@ -8,9 +8,24 @@ use Carbon\Carbon;
 
 class TodoItemController extends Controller
 {
-    public function index(TodoItem $todoitem)
+	public function index(Request $request)
 	{
-		return view("todos", ["todos" => $todoitem->latest()->get() ]);
+
+		$sortby = "id";
+		$sorttype = "DESC";
+		if ($request->sortName) $sortname = $request->sortName  & $sorttype = $request->sortType;
+
+		$todoitem = TodoItem::orderBy($sortname, $sorttype);
+
+		if($request->searchColumnName) $todoitem->where($request->searchColumnName,'like', "%".$request->searchName."%");
+
+		if ($request->isComplaint == "true" ) $todoitem->whereNotNull("complated_at");
+		elseif($request->isComplaint == "false") $todoitem->whereNull("complated_at");
+
+		if($request->sortName) $todoitem->orderBy($request->sortName, $request->sortType);
+
+		return view("todos", ["todos" => $todoitem->paginate($request->paginateCount) ]);
+
 	}
 
 	public function store(Request $request)
