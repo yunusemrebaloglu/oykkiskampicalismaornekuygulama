@@ -11,20 +11,20 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+//
+// Route::get('/falan' , function () {
+// 	return App\TodoItem::all();
+// });
 
-Route::get('/falan' , function () {
-	return App\TodoItem::all();
-});
-
-Route::get('/lolo', 'TodoItemController@index')->name("lolo");
-Route::post('/store', 'TodoItemController@store')->name("storeTodo");
+Route::get('/', 'TodoItemController@index')->name("lolo")->middleware(['auth']);
+Route::post('/store', 'TodoItemController@store')->name("storeTodo")->middleware(['auth']);
 // Route::get('/random', 'TodoItemController@randomAddTodo');
-Route::get('/complaint/{todoitem}', 'TodoItemController@complaitedTodoList')->name('setComplaite');
-Route::get('/delete/{todoitem}', 'TodoItemController@deleteTodoList')->name('deleteItem');
+Route::get('/complaint/{todoitem}', 'TodoItemController@complaitedTodoList')->name('setComplaite')->middleware(['auth']);
+Route::get('/delete/{todoitem}', 'TodoItemController@deleteTodoList')->name('deleteItem')->middleware(['auth']);
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home')->middleware(['auth']);

@@ -10,12 +10,11 @@ class TodoItemController extends Controller
 {
 	public function index(Request $request)
 	{
-
 		$sortby = "id";
-		$sorttype = "DESC";
-		if ($request->$sortby) $sortby = $request->$sortby  & $sorttype = $request->sortType;
+		$sortType = "DESC";
+		if ($request->$sortby) $sortby = $request->$sortby  & $sortType = $request->sortType;
 
-		$todoitem = TodoItem::orderBy($sortby, $sorttype);
+		$todoitem = $request->user()->todos()->orderBy($sortby, $sortType);
 
 		if($request->searchColumnName) $todoitem->where($request->searchColumnName,'like', "%".$request->searchName."%");
 
@@ -30,6 +29,7 @@ class TodoItemController extends Controller
 	public function store(Request $request)
 	{
 		$todoItem = new TodoItem;
+		$todoItem->user_id = $request->user()->id;
 		$todoItem->text = $request->text;
 		$todoItem->save();
 		return redirect(route('lolo'));

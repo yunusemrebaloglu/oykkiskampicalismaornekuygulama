@@ -15,6 +15,7 @@ class CreateTodoItemsTable extends Migration
     {
         Schema::create('todo_items', function (Blueprint $table) {
             $table->bigIncrements('id');
+			$table->bigInteger("user_id")->unsigned();
 			$table->string("text");
             $table->datetime('complated_at')->nullable()->default(null);
             $table->timestamps();
