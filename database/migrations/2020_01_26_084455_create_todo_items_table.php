@@ -17,7 +17,7 @@ class CreateTodoItemsTable extends Migration
             $table->bigIncrements('id');
 			$table->bigInteger("user_id")->unsigned();
 			$table->string("text");
-            $table->datetime('complated_at')->nullable()->default(null);
+            $table->datetime('completed_at')->nullable()->default(null);
             $table->timestamps();
 
         });

@@ -32,7 +32,7 @@
 							<th scope="row">{{$todo->id}}</th>
 							<td>{{$todo->text}}</td>
 							<td>
-								@if(!$todo->complated_at)
+								@if(!$todo->completed_at)
 
 								<a href="{{route('setComplaite', $todo->id)}}">🕔</a>
 								@else

@@ -22,8 +22,8 @@ class TodoItemController extends Controller
 
 		if($request->searchColumnName) $todoitem->where($request->searchColumnName,'like', "%".$request->searchName."%");
 
-		if ($request->isComplaint == "true" ) $todoitem->whereNotNull("complated_at");
-		elseif($request->isComplaint == "false") $todoitem->whereNull("complated_at");
+		if ($request->isComplaint == "true" ) $todoitem->whereNotNull("completed_at");
+		elseif($request->isComplaint == "false") $todoitem->whereNull("completed_at");
 
 
 		return $todoitem->paginate($request->paginateCount);
@@ -33,6 +33,7 @@ class TodoItemController extends Controller
 	public function store(Request $request)
 	{
 		$todoItem = new TodoItem;
+		$todoItem->user_id = 1;
 		$todoItem->user_id = Auth::guard('api')->user()->id;
 		$todoItem->text = $request->text;
 		$todoItem->save();
@@ -41,7 +42,7 @@ class TodoItemController extends Controller
 
 	public function complaitedTodoList(TodoItem $todoitem, Request $request)
 	{
-		// $todoitem->complated_at = Carbon::now();
+		// $todoitem->completed_at = Carbon::now();
 		if ($todoitem->user_id != Auth::guard('api')->user()->id) abort(403);
 		$todoitem->toggle();
 		$todoitem->save();

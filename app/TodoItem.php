@@ -10,8 +10,8 @@ class TodoItem extends Model
 {
     public function toggle()
 	{
-		if ($this->complated_at) return $this->complated_at = null;
-		return $this->complated_at = Carbon::now();
+		if ($this->completed_at) return $this->completed_at = null;
+		return $this->completed_at = Carbon::now();
 	}
 
 	public function user()

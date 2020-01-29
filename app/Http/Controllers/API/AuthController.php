@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -10,17 +11,20 @@ class AuthController extends Controller
 {
 	public function __construct()
 	{
-		$this->middleware('auth:api', ['except' => ['login']]);
+		// $this->middleware('auth:api', ['except' => ['login']]);
 	}
 
-	public function register(Request $request)
-	{
-		$request->name;
-		$request->email;
-		$request->password;
+	public function register(Request $request) {
 
-		return $this->respondWithToken($token);
+		$request['password'] = \Hash::make($request['password']);
+		$user = User::create($request->all());
+		$user->save();
+		if ($request->type == "personal")$user->notify(new VerifyPhoneNumber(decrypt($user->phone_number_verify_code)));
+		$user->token = $user->createToken("OymundoBaseAPI")->accessToken;
+		return response()->json($user, 201);
+
 	}
+
 	public function login()
 	{
 		$credentials = request(['email', 'password']);
